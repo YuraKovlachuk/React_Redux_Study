@@ -1,4 +1,3 @@
-
 // Задача для этого компонента:
 // Фильтры должны формироваться на основании загруженных данных
 // Фильтры должны отображать только нужных героев при выборе
@@ -16,9 +15,9 @@ const HeroesFilters = () => {
     const mapButtons = filters.map((item) => {
         switch(item) {
             case 'all':
-                return <button className="btn btn-outline-dark active" onClick={() => dispatch(filterHeroes(item))}>Все</button>
+                return <button className="btn btn-outline-dark" onClick={() => dispatch(filterHeroes(item))}>Все</button>
             case 'fire':
-                return <button className="btn btn-danger" onClick={() => dispatch(filterHeroes(item))}>Вогонь</button>
+                return <button className="btn btn-danger active" onClick={() => dispatch(filterHeroes(item))}>Вогонь</button>
             case 'water':
                 return <button className="btn btn-primary" onClick={() => dispatch(filterHeroes(item))}>Вода</button>
             case 'wind':

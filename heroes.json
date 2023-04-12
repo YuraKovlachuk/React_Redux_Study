@@ -17,6 +17,12 @@
       "name": "Морской герой",
       "description": "Как аквамен, но не из DC",
       "element": "water"
+    },
+    {
+      "id": "abd30846-4a9c-4781-b800-6f45045f5cef",
+      "name": "САШО МОЛОДЧИНКА",
+      "description": "",
+      "element": "wind"
     }
   ],
   "filters": [
