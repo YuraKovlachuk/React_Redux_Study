@@ -1,7 +1,5 @@
-import { createStore, compose, applyMiddleware } from 'redux';
 import { configureStore } from "@reduxjs/toolkit";
-import ReduxThunk from 'redux-thunk'
-import reducer from '../reducers';
+import reducer from "../slices/stateSlice";
 
 const stringMiddleware = () => (next) => (action) => {
     if(typeof action === 'string') {

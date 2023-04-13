@@ -1,4 +1,12 @@
-import {createAction} from "@reduxjs/toolkit";
+import {
+    filterFetched,
+    heroesDeleted,
+    heroesDeleting,
+    heroesDeletingError,
+    heroesFetched,
+    heroesFetching,
+    heroesFetchingError
+} from "../slices/stateSlice";
 
 export const fetchHeroes = (request) => (dispatch) => {
     dispatch(heroesFetching());
@@ -13,15 +21,24 @@ export const fetchFilters = (request) => (dispatch) => {
         .catch((e) => console.log(e))
 }
 
+export const deleteHero = (request, id) => (dispatch) => {
+    console.log(request)
+    console.log(id)
+    dispatch(heroesDeleting());
+    request(`http://localhost:3001/heroes/${id}`, 'DELETE')
+        .then(() => dispatch(heroesDeleted(id)))
+        .catch(() => dispatch(heroesDeletingError()))
+}
+
 // export const heroesFetching = () => {
 //     return {
 //         type: 'HEROES_FETCHING'
 //     }
 // }
 
-export const heroesFetching = createAction('HEROES_FETCHING')
-
-export const heroesFetched = createAction('HEROES_FETCHED')
+// export const heroesFetching = createAction('HEROES_FETCHING')
+//
+// export const heroesFetched = createAction('HEROES_FETCHED')
 
 // export const heroesFetched = (heroes) => {
 //     return {
@@ -30,60 +47,60 @@ export const heroesFetched = createAction('HEROES_FETCHED')
 //     }
 // }
 
-export const heroesFetchingError = () => {
-    return {
-        type: 'HEROES_FETCHING_ERROR'
-    }
-}
+// export const heroesFetchingError = () => {
+//     return {
+//         type: 'HEROES_FETCHING_ERROR'
+//     }
+// }
+//
+// export const heroesDeleting = () => {
+//     return {
+//         type: 'HEROES_DELETING'
+//     }
+// }
+//
+// export const heroesDeleted = (id) => {
+//     return {
+//         type: 'HEROES_DELETED',
+//         payload: id
+//     }
+// }
+//
+// export const heroesDeletingError = () => {
+//     return {
+//         type: 'HEROES_DELETING_ERROR'
+//     }
+// }
+//
+// export const heroesAdding = () => {
+//     return {
+//         type: 'HEROES_ADDING'
+//     }
+// }
+//
+// export const heroesAdded = (hero) => {
+//     return {
+//         type: 'HEROES_ADDED',
+//         payload: hero
+//     }
+// }
 
-export const heroesDeleting = () => {
-    return {
-        type: 'HEROES_DELETING'
-    }
-}
+// export const heroesAddingError = () => {
+//     return {
+//         type: 'HEROES_ADDING_ERROR'
+//     }
+// }
 
-export const heroesDeleted = (id) => {
-    return {
-        type: 'HEROES_DELETED',
-        payload: id
-    }
-}
-
-export const heroesDeletingError = () => {
-    return {
-        type: 'HEROES_DELETING_ERROR'
-    }
-}
-
-export const heroesAdding = () => {
-    return {
-        type: 'HEROES_ADDING'
-    }
-}
-
-export const heroesAdded = (hero) => {
-    return {
-        type: 'HEROES_ADDED',
-        payload: hero
-    }
-}
-
-export const heroesAddingError = () => {
-    return {
-        type: 'HEROES_ADDING_ERROR'
-    }
-}
-
-export const filterFetched = (filters) => {
-    return {
-        type: 'FILTER_FETCHED',
-        payload: filters
-    }
-}
-
-export const filterHeroes = (filter) => {
-    return {
-        type: 'HEROES_FILTERED',
-        payload: filter
-    }
-}
+// export const filterFetched = (filters) => {
+//     return {
+//         type: 'FILTER_FETCHED',
+//         payload: filters
+//     }
+// }
+//
+// export const filterHeroes = (filter) => {
+//     return {
+//         type: 'HEROES_FILTERED',
+//         payload: filter
+//     }
+// }

@@ -1,16 +1,13 @@
 import {useDispatch} from 'react-redux';
-import {heroesDeleted, heroesDeleting, heroesDeletingError} from '../../actions';
 import {useHttp} from '../../hooks/http.hook';
+import {deleteHero} from "../../actions";
 
 const HeroesListItem = ({name, description, element, id}) => {
     const dispatch = useDispatch();
     const {request} = useHttp();
 
-    const deleteHero = () => {
-        dispatch(heroesDeleting());
-        request(`http://localhost:3001/heroes/${id}`, 'DELETE')
-            .then(() => dispatch(heroesDeleted(id)))
-            .catch(() => dispatch(heroesDeletingError()))
+    const onDeleteHero = () => {
+        dispatch(deleteHero(request, id))
     }
 
     let elementClassName;
@@ -32,19 +29,19 @@ const HeroesListItem = ({name, description, element, id}) => {
     }
 
     return (
-        <li 
+        <li
             className={`card flex-row mb-4 shadow-lg text-white ${elementClassName}`}>
             <img src="https://www.stpaulsteinbach.org/wp-content/uploads/2014/09/unknown-hero.jpg"
-                 className="img-fluid w-25 d-inline" 
-                 alt="unknown hero" 
+                 className="img-fluid w-25 d-inline"
+                 alt="unknown hero"
                  style={{'objectFit': 'cover'}}/>
             <div className="card-body">
-                
+
                 <h3 className="card-title">{name}</h3>
                 <p className="card-text">{description}</p>
             </div>
             <span className="position-absolute top-0 start-100 translate-middle badge border rounded-pill bg-light">
-                <button type="button" onClick={() => deleteHero()} className="btn-close btn-close" aria-label="Close"></button>
+                <button type="button" onClick={() => onDeleteHero()} className="btn-close btn-close" aria-label="Close"></button>
             </span>
         </li>
     )
