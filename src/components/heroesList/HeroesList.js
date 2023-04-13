@@ -1,10 +1,9 @@
-import {useHttp} from '../../hooks/http.hook';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import {fetchHeroes} from '../../actions';
 import HeroesListItem from "../heroesListItem/HeroesListItem";
 import Spinner from '../spinner/Spinner';
+import {fetchHeroes} from "../../slices/stateSlice";
 
 // Задача для этого компонента:
 // При клике на "крестик" идет удаление персонажа из общего состояния
@@ -14,10 +13,9 @@ import Spinner from '../spinner/Spinner';
 const HeroesList = () => {
     const {heroesLoadingStatus, filteredHeroes} = useSelector(state => state);
     const dispatch = useDispatch();
-    const {request} = useHttp();
 
     useEffect(() => {
-        dispatch(fetchHeroes(request))
+        dispatch(fetchHeroes())
     }, []);
 
     if (heroesLoadingStatus === "loading") {

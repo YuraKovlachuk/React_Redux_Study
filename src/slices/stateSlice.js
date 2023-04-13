@@ -1,4 +1,5 @@
-import {createSlice} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {useHttp} from "../hooks/http.hook";
 
 const initialState = {
     heroes: [],
@@ -9,17 +10,25 @@ const initialState = {
     filters: []
 }
 
+export const fetchHeroes = createAsyncThunk(
+    'state/fetchHeroes',
+    async () => {
+        const {request} = useHttp();
+        return await request('http://localhost:3001/heroes')
+    }
+)
+
+export const fetchFilters = createAsyncThunk(
+    'state/fetchFilters',
+    async () => {
+        const { request } = useHttp()
+        return await request('http://localhost:3001/filters')
+    }
+)
 const stateSlice = createSlice({
     name: 'state',
     initialState,
     reducers: {
-        heroesFetching: state => { state.heroesLoadingStatus = 'loading'; },
-        heroesFetched: (state, action) => {
-            state.heroes = action.payload;
-            state.filteredHeroes = action.payload;
-            state.heroesLoadingStatus = 'idle';
-        },
-        heroesFetchingError: state => { state.heroesLoadingStatus = 'error'; },
         heroesDeleting: state => { state.heroesDeletingStatus = 'loading'; },
         heroesDeleted: (state, action) => {
             state.heroesDeletingStatus = 'idle';
@@ -34,17 +43,33 @@ const stateSlice = createSlice({
             state.filteredHeroes.push(action.payload);
         },
         heroesAddingError: state => { state.heroesAddingStatus = 'error'; },
-        filterFetched: (state, action) => {
-            state.filters = action.payload
-        },
         filterHeroes: (state, action) => {
             state.filteredHeroes = state.heroes.filter(item => {
                 if(action.payload === 'all') return true
                 return item.element === action.payload
             })
         }
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchHeroes.pending, state => { state.heroesLoadingStatus = 'loading'; })
+            .addCase(fetchHeroes.fulfilled, (state, action) => {
+                state.heroes = action.payload;
+                state.filteredHeroes = action.payload;
+                state.heroesLoadingStatus = 'idle';
+            })
+            .addCase(fetchHeroes.rejected, state => { state.heroesLoadingStatus = 'error'; })
+            .addCase(fetchFilters.fulfilled, (state, action) => { state.filters = action.payload })
+            .addDefaultCase(() => {})
     }
 })
+
+export const deleteHero = (request, id) => (dispatch) => {
+    dispatch(heroesDeleting());
+    request(`http://localhost:3001/heroes/${id}`, 'DELETE')
+        .then(() => dispatch(heroesDeleted(id)))
+        .catch(() => dispatch(heroesDeletingError()))
+}
 
 const {actions, reducer} = stateSlice
 
@@ -56,9 +81,5 @@ export const {
     heroesDeleted,
     heroesDeleting,
     heroesDeletingError,
-    heroesFetched,
-    heroesFetching,
-    heroesFetchingError,
-    filterFetched,
     filterHeroes
 } = actions
